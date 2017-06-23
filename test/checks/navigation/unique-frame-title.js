@@ -7,6 +7,9 @@ describe('unique-frame-title', function () {
 			this._data = d;
 		}
 	};
+	var getAttribute = function (prop) {
+		return this[prop];
+	};
 
 	afterEach(function () {
 		checkContext._data = null;
@@ -15,21 +18,24 @@ describe('unique-frame-title', function () {
 
 	it('should log title to data and return true', function () {
 		assert.isTrue(checks['unique-frame-title'].evaluate.call(checkContext, {
-			title: 'bananas'
+			title: 'bananas',
+			getAttribute: getAttribute
 		}));
 		assert.equal(checkContext._data, 'bananas');
 	});
 
 	it('should convert text to lower case', function () {
 		checks['unique-frame-title'].evaluate.call(checkContext, {
-			title: '\t  app\t \n \rle  '
+			title: '\t  app\t \n \rle  ',
+			getAttribute: getAttribute
 		});
 		assert.equal(checkContext._data, 'app le');
 	});
 
 	it('should take out space differences', function () {
 		checks['unique-frame-title'].evaluate.call(checkContext, {
-			title: 'APPLE'
+			title: 'APPLE',
+			getAttribute: getAttribute
 		});
 		assert.equal(checkContext._data, 'apple');
 	});
